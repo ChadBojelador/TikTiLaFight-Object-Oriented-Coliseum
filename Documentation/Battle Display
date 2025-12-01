@@ -1,0 +1,142 @@
+📄 BattleDisplay Class Documentation
+
+Overview
+
+The BattleDisplay class is a utility component responsible for handling all console-based visual outputs during battles in Cock Clashers: Object-Oriented Coliseum.
+It enhances player experience by providing clear and structured text displays such as headers, health bars, and rooster selection menus.
+
+This class does not manage any game logic; instead, it focuses solely on presentation, making it a key part of the game’s View Layer in the MVC-inspired structure.
+
+
+---
+
+Purpose
+
+The purpose of the BattleDisplay class is to:
+
+Visually represent game data in a readable format.
+
+Provide players with an intuitive display during rooster selection and battle sequences.
+
+Increase immersion through styled ASCII elements such as frames and graphical health bars.
+
+
+It helps maintain clean separation between game logic (Model/Controller) and user interface (View).
+
+
+---
+
+Key Responsibilities
+
+✔ Display Battle Header
+
+Creates a stylized ASCII-art header to indicate the start of a battle sequence.
+
+✔ Display Rooster Selection Menu
+
+Lists available roosters with their corresponding:
+
+Type
+
+HP
+
+Attack
+
+Defense
+
+
+This menu helps players make informed choices before entering combat.
+
+✔ Display Health Bars
+
+Generates a visual health bar for each rooster using ASCII characters:
+
+█ represents remaining health
+
+░ represents lost health
+
+
+The bar dynamically scales based on the rooster’s current HP, providing real-time visual feedback during battle turns.
+
+
+---
+
+Methods and Descriptions
+
+### displayHealthBar(Rooster rooster, int maxHp)
+
+Description:
+Displays a 20-character health bar representing the rooster’s current HP relative to its maximum HP.
+
+How It Works:
+
+Calculates the proportion of health remaining.
+
+Fills the bar with █ for remaining HP, and ░ for missing HP.
+
+Prints both graphical bar and numeric values (current HP / max HP).
+
+
+Usage Example:
+
+BattleDisplay.displayHealthBar(playerRooster, playerRooster.getMaxHp());
+
+
+---
+
+displayBattleHeader()
+
+Description:
+Prints a framed ASCII header titled “ROOSTER BATTLE ARENA” to mark the start of combat.
+
+Purpose:
+Adds thematic style and improves overall presentation.
+
+
+---
+
+displayRoosterChoice()
+
+Description:
+Shows the roster of available roosters with detailed stats.
+
+Sample Output:
+
+=== PICK YOUR ROOSTER ===
+1. Manok na Puti (Balanced) - Type: Fire
+   HP: 120 | ATK: 30 | DEF: 10
+2. Manok na Itim (High Attack) - Type: Dark
+   HP: 100 | ATK: 40 | DEF: 8
+3. Manok na Bato (High Defense) - Type: Rock
+   HP: 150 | ATK: 20 | DEF: 20
+
+Purpose:
+Supports the setup phase of the battle by giving players clear information for decision-making.
+
+
+---
+
+Role in the System Architecture
+
+The BattleDisplay class supports the View Layer, making the game interface more intuitive and readable.
+It interacts with:
+
+Models (Rooster objects) for retrieving health and names
+
+Controllers that trigger display updates during combat
+
+
+It does not modify data or handle battle logic, ensuring proper separation of concerns.
+
+
+---
+
+Future Enhancement Ideas
+
+GUI-based display when migrating to JavaFX
+
+Animated health bar transitions
+
+Color-coded text for damage, healing, and special effects
+
+Selectable interface themes
