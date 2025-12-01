@@ -11,7 +11,7 @@ public class InputValidator {
                     }
                     System. out.print("Please enter a number between " + min + " and " + max + ": ");
                 } else {
-                    scanner. next(); // Clear invalid input
+                    scanner. next();
                     System.out.print("Invalid input. Please enter a number: ");
                 }
             } catch (Exception e) {
