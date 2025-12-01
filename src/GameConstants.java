@@ -1,35 +1,28 @@
 public class GameConstants {
-    // Damage constants
+
     public static final int MIN_DAMAGE = 1;
 
-    // Manok na Puti (Now Pula) stats
     public static final int MANOK_PULA_HP = 120;
     public static final int MANOK_PULA_ATK = 30;
     public static final int MANOK_PULA_DEF = 10;
     public static final String MANOK_PULA_TYPE = "fire";
-
-    // Manok na Itim stats
+   
     public static final int MANOK_ITIM_HP = 100;
     public static final int MANOK_ITIM_ATK = 40;
     public static final int MANOK_ITIM_DEF = 8;
     public static final String MANOK_ITIM_TYPE = "dark";
-
-    // Manok na Bato stats
+    
     public static final int MANOK_BATO_HP = 150;
     public static final int MANOK_BATO_ATK = 20;
     public static final int MANOK_BATO_DEF = 20;
     public static final String MANOK_BATO_TYPE = "rock";
-
-    // Battle constants
+   
     public static final double CRIT_CHANCE = 0.15;
     public static final double CRIT_MULTIPLIER = 2.0;
-
-    // --- ASSET PATHS (UPDATED FOR YOUR NEW FOLDERS) ---
-    // Note: Ensure your folders in src are exactly named "battle ui" and "battle scene"
     
     public static final String PATH_BG_CITY = "/battle ui/battle scene/city_bg.png";
     public static final String PATH_BASE = "/battle ui/battle scene/elite5_base1.png";
-    
+
     public static final String PATH_PULA_FRONT = "/battle ui/rooster/manok na pula front.png";
     public static final String PATH_PULA_BACK = "/battle ui/rooster/manok na pula back.png";
     
@@ -39,12 +32,10 @@ public class GameConstants {
     public static final String PATH_BATO_FRONT = "/battle ui/rooster/manok na bato front.png";
     public static final String PATH_BATO_BACK = "/battle ui/rooster/manok na bato back.png";
     
-    // Music paths
     public static final String MUSIC_ADVENTURE = "/Audio/Musics/35 - Adventure.wav";
     public static final String MUSIC_BATTLE = "/Audio/Musics/34  - Fight.wav";
     public static final String MUSIC_TITLE = "/Audio/Musics/35 - Adventure.wav";
     
-    // Sound effect paths
     public static final String SOUND_MENU_MOVE = "/Audio/Sounds/Menu/Move1.wav";
     public static final String SOUND_MENU_ACCEPT = "/Audio/Sounds/Menu/Accept.wav";
     public static final String SOUND_MENU_CANCEL = "/Audio/Sounds/Menu/Cancel.wav";
