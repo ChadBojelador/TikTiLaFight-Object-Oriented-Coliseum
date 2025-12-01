@@ -1,0 +1,176 @@
+📄 Rooster Class Documentation
+
+Class Name: Rooster
+Language: Java
+
+Description:
+
+The Rooster class is an abstract class representing the combat units in the Cock Clashers game. Each rooster has attributes such as health points (HP), attack, defense, type, and skills. This class provides core mechanics for battle interactions, including taking damage, healing, attacking, and applying type-based damage multipliers.
+
+It also handles sprite management for both front and back images, enabling visual representation during battles. Specific rooster types are implemented as subclasses with unique attributes and skills.
+
+Key Features:
+
+Stores and manages rooster stats (HP, attack, defense, type).
+
+Manages skills and supports adding multiple skills per rooster.
+
+Handles battle mechanics such as damage calculation, type effectiveness, and critical hits.
+
+Provides sprite loading for visual representation in the game.
+
+Supports fainting checks and full healing.
+
+
+Fields:
+
+Field	Type	Description
+
+String name	String	Rooster’s name.
+int hp	int	Current health points.
+int maxHp	int	Maximum health points.
+int attack	int	Attack power.
+int defense	int	Defense power.
+String type	String	Elemental type (fire, dark, rock, etc.).
+List<Skill> skills	List	List of rooster’s available skills.
+BufferedImage frontSprite, backSprite	BufferedImage	Images for front and back sprites.
+
+
+Constructors:
+
+public Rooster(String name, int hp, int attack, int defense, String type, String frontPath, String backPath)
+
+Description: Initializes a rooster with stats, type, and loads its front and back sprites.
+
+Parameters:
+
+name – Rooster’s name.
+
+hp – Initial health points.
+
+attack – Attack value.
+
+defense – Defense value.
+
+type – Elemental type.
+
+frontPath – Path to front sprite image.
+
+backPath – Path to back sprite image.
+
+
+
+---
+
+Methods:
+
+public BufferedImage getFrontSprite() / getBackSprite()
+
+Description: Returns the loaded front or back sprite.
+
+
+---
+
+public void healFull()
+
+Description: Restores HP to maximum value.
+
+
+---
+
+public void takeDamage(int damage)
+
+Description: Reduces HP by damage value; ensures HP does not drop below 0.
+
+
+---
+
+public boolean isFainted()
+
+Description: Checks if the rooster has fainted (HP ≤ 0).
+
+Returns:
+
+boolean – True if fainted.
+
+
+
+---
+
+public final void addSkill(Skill skill)
+
+Description: Adds a skill to the rooster’s skill list.
+
+
+---
+
+public List<Skill> getSkills()
+
+Description: Returns the list of skills.
+
+
+---
+
+public int attack(Rooster enemy, Skill skill)
+
+Description: Performs an attack on the enemy rooster using a skill. Calculates base damage, applies type effectiveness, and handles critical hits. Updates enemy HP.
+
+Returns:
+
+int – Total damage dealt.
+
+
+
+---
+
+Subclasses:
+
+Subclass	Description
+
+ManokNaPula	Fire-type rooster with fire-based skills like Flame Peck and Burning Crow.
+ManokNaItim	Dark-type rooster with shadow-based attacks.
+ManokNaBato	Rock-type rooster with stone and scratch skills.
+
+
+Algorithm / Process Overview:
+
+1. Initialization: Load sprites and initialize stats.
+
+
+2. Battle:
+
+Use attack() with a chosen skill.
+
+Calculate damage: max(skillDamage - enemyDefense, MIN_DAMAGE).
+
+Apply type multiplier from TypeEffectiveness.
+
+Apply critical hit chance.
+
+Reduce enemy HP.
+
+
+
+3. Healing / Fainting:
+
+healFull() restores HP.
+
+isFainted() checks if HP ≤ 0.
+
+
+
+
+
+---
+
+Benefits:
+
+Provides a modular and extendable framework for different rooster types.
+
+Encapsulates battle logic and type-based damage mechanics.
+
+Supports skill system with easy addition of new abilities.
+
+Integrates seamlessly with GUI and game engine rendering.
+
+
