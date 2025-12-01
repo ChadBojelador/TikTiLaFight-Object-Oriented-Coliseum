@@ -1,0 +1,161 @@
+📄 Player Class Documentation
+
+Class Name: Player
+
+Package: (if applicable, e.g., entities)
+Language: Java
+
+Description:
+
+The Player class represents the main controllable character in the Cock Clashers game world. It handles movement, collision detection, and sprite animation. The class ensures smooth player movement, correct interaction with the game map, and proper rendering of the character.
+
+Key Features:
+
+Handles player movement in four directions (Up, Down, Left, Right).
+
+Implements collision detection with game map tiles (walls, water, and walkable areas).
+
+Animates the player sprite using a sprite sheet.
+
+Supports smooth rendering with scaling relative to tile size.
+
+
+Fields:
+
+Field	Type	Description
+
+int x, y	int	Player’s current position in pixels.
+int speed	int	Movement speed in pixels per update.
+int direction	int	Movement direction (0: Down, 1: Up, 2: Left, 3: Right).
+boolean isMoving	boolean	True if the player is currently moving.
+BufferedImage spriteSheet	BufferedImage	Image containing all animation frames.
+int spriteCounter, spriteNum, sequenceIndex	int	Counters for animation timing and frame selection.
+int[] walkSequence	int[]	Sequence of frames for walking animation.
+
+
+Constructors:
+
+public Player(int startX, int startY)
+
+Description: Initializes the player’s position, default speed, and loads the sprite sheet.
+
+Parameters:
+
+startX – Starting X-coordinate.
+
+startY – Starting Y-coordinate.
+
+
+
+---
+
+Methods:
+
+private void loadImages()
+
+Description: Loads the player sprite sheet from resources. Handles missing files and I/O errors.
+
+
+---
+
+public void update(Set<Integer> activeKeys, int[][] worldMap, int tileSize)
+
+Description: Updates the player’s position and animation based on keyboard input and collision detection.
+
+Parameters:
+
+activeKeys – Set of currently pressed key codes.
+
+worldMap – 2D array representing the game map tiles.
+
+tileSize – Size of a single tile in pixels.
+
+
+
+---
+
+private void updateAnimation()
+
+Description: Updates the walking animation by cycling through the walkSequence frames.
+
+
+---
+
+private boolean checkCollision(int targetX, int targetY, int[][] map, int tileSize)
+
+Description: Checks if the player will collide with non-walkable tiles at the proposed position.
+
+Returns:
+
+boolean – true if collision detected, otherwise false.
+
+
+
+---
+
+public void draw(Graphics2D g2, int tileSize)
+
+Description: Renders the player on the screen using the appropriate sprite frame. Supports scaling for larger sprites relative to tile size.
+
+Parameters:
+
+g2 – Graphics2D object used for drawing.
+
+tileSize – Size of the map tile in pixels.
+
+
+
+---
+
+Algorithm / Process Overview:
+
+1. Movement:
+
+Update player position based on pressed keys (W, A, S, D).
+
+Set direction and isMoving flags.
+
+
+
+2. Collision Detection:
+
+Check all four corners of the player’s hitbox against the world map.
+
+Prevent movement into non-walkable tiles (walls, water).
+
+
+
+3. Animation:
+
+Increment spriteCounter on movement.
+
+Cycle through walkSequence frames to animate walking.
+
+
+
+4. Rendering:
+
+Determine the correct frame from sprite sheet based on direction and animation.
+
+Draw scaled sprite centered on tile.
+
+If sprite sheet is missing, draw a placeholder rectangle.
+
+
+
+
+
+---
+
+Benefits:
+
+Provides responsive player movement with collision handling.
+
+Supports smooth animation using sprite sheets.
+
+Modular design allows easy integration of additional features (e.g., skills, power-ups).
+
+Scales graphics dynamically to fit different tile sizes.
+
+
+
