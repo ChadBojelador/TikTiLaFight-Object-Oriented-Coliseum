@@ -12,24 +12,17 @@ import java.util.Set;
 
 public class GameEngine extends JPanel implements Runnable, KeyListener {
 
-    // --- CONFIGURATION ---
-    final int tileSize = 32;  // Display tile size
+    final int tileSize = 32; 
 
-    // SCREEN SETTINGS (fixed size for all scenes)
     final int screenWidth = 800;
     final int screenHeight = 576;
-    
-    // For collision: map is 26x29 tiles at 16px = 416x464 pixels
-    // We scale collision coords by 2 to match 32px display tiles
     final int collisionScale = 2;
 
-    // WORLD SETTINGS (computed from map)
     int maxWorldCol;
     int maxWorldRow;
     int worldWidth;
     int worldHeight;
 
-    // --- GAME STATES ---
     final int STATE_TITLE = 0;
     final int STATE_STARTER_SELECT = 1;
     final int STATE_ROAMING = 2;
@@ -38,24 +31,20 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
 
     int gameState = STATE_TITLE;
 
-    // --- SYSTEM ---
     Thread gameThread;
     Set<Integer> activeKeys = new HashSet<>();
 
-    // --- ASSETS ---
     Image starterMapImage;
     Image titleScreenImage;
     Image pressEnterImage;
     BufferedImage battleBg;
     BufferedImage battleBase;
 
-    // --- ANIMATION COUNTERS ---
     int titleCounter = 0;
     boolean showStartText = true;
     int transitionCounter = 0;
     boolean flashWhite = true;
 
-    // --- BATTLE ANIMATION ---
     int battleAnimTimer = 0;
     int playerShakeX = 0;
     int enemyShakeX = 0;
@@ -68,15 +57,13 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     int damagePopupY = 0;
     boolean showDamageOnEnemy = true;
 
-    // --- ENTITIES ---
     Player player;
     Rooster playerCock;
     Rooster enemyCock;
     String battleMessage = "";
     String battleSubMessage = "";
     int starterIndex = 0;
-
-    // --- MUSIC ---
+    
     MusicManager musicManager;
 
     // MAP DATA (26 x 29) - Matches MapV2.png at 416x464 pixels with 16px tiles
@@ -114,18 +101,15 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     };
 
     public GameEngine() {
-        // compute world dimensions from map
         if (newMapData != null && newMapData.length > 0 && newMapData[0] != null) {
             maxWorldRow = newMapData.length;
             maxWorldCol = newMapData[0].length;
         } else {
-            // fallback defaults
             maxWorldRow = 24;
             maxWorldCol = 25;
         }
         worldWidth = tileSize * maxWorldCol;
         worldHeight = tileSize * maxWorldRow;
-
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -136,7 +120,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         this.addKeyListener(this);
         this.setFocusable(true);
 
-        // Request focus after component hierarchy is realized
         SwingUtilities.invokeLater(this::requestFocusInWindow);
 
         player = new Player(tileSize * 10, tileSize * 20);
@@ -149,11 +132,8 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         try {
             starterMapImage = loadImageSafe("/res/MapV2.png");
             titleScreenImage = loadImageSafe("/res/Title.png");
-
-            // --- FIX: Enable Transparency for Start Button ---
             pressEnterImage = loadImageWithTransparency("/res/start.png", true);
 
-            // --- FIX: Load Battle Assets with Explicit Check ---
             battleBg = toBuffered(loadImageSafe(GameConstants.PATH_BG_CITY));
             if (battleBg == null) System.out.println("❌ ERROR: Failed to load " + GameConstants.PATH_BG_CITY);
 
@@ -165,7 +145,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    // helper to convert Image -> BufferedImage safely
     private BufferedImage toBuffered(Image img) {
         if (img == null) return null;
         if (img instanceof BufferedImage) return (BufferedImage) img;
@@ -186,7 +165,7 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         }
     }
 
-    // --- FIX: RESTORED TRANSPARENCY LOGIC ---
+    
     private Image loadImageWithTransparency(String path, boolean removeBlack) {
         try {
             URL url = getClass().getResource(path);
@@ -207,9 +186,7 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                     int b = rgba & 0xFF;
 
                     if (removeBlack) {
-                        // If pixel is very dark (almost black), make it fully transparent
                         if (alpha > 0 && r < 30 && g < 30 && b < 30) {
-                            // set fully transparent ARGB
                             transparentImg.setRGB(col, row, 0x00000000);
                         }
                     }
@@ -265,7 +242,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                 int col = playerCenterX / tileSize;
                 int row = playerCenterY / tileSize;
 
-                // use computed world dimensions
                 if (col >= 0 && col < maxWorldCol && row >= 0 && row < maxWorldRow) {
                     int tileType = newMapData[row][col];
                     if (tileType == 2 && player.isMoving && new Random().nextInt(100) < 1) {
@@ -305,7 +281,7 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create(); // create copy so we can dispose safely
+        Graphics2D g2 = (Graphics2D) g.create();
 
         switch (gameState) {
             case STATE_TITLE -> drawTitleScreen(g2);
@@ -393,7 +369,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     }
 
     private void drawBattle(Graphics2D g2) {
-        // defensive null checks
         if (playerCock == null || enemyCock == null) {
             g2.setColor(Color.GRAY);
             g2.fillRect(0, 0, screenWidth, screenHeight);
@@ -402,7 +377,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             return;
         }
 
-        // Update shake animation
         if (battleAnimTimer > 0) {
             battleAnimTimer--;
             if (showDamageOnEnemy) {
@@ -432,7 +406,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.drawImage(battleBase, playerBaseX - 30, playerBaseY, 250, 100, null);
         }
 
-        // Draw enemy rooster with shake
         if (enemyCock.getFrontSprite() != null) {
             g2.drawImage(enemyCock.getFrontSprite(), enemyBaseX + 20 + enemyShakeX, enemyBaseY - 80, 160, 160, null);
         } else {
@@ -440,7 +413,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.fillOval(enemyBaseX + 50 + enemyShakeX, enemyBaseY - 50, 80, 80);
         }
 
-        // Draw player rooster with shake
         if (playerCock.getBackSprite() != null) {
             g2.drawImage(playerCock.getBackSprite(), playerBaseX + 20 + playerShakeX, playerBaseY - 80, 160, 160, null);
         } else {
@@ -448,17 +420,14 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.fillOval(playerBaseX + 50 + playerShakeX, playerBaseY - 50, 80, 80);
         }
 
-        // Draw damage popup
         if (battleAnimTimer > 0 && damagePopup > 0) {
             g2.setFont(new Font("Arial", Font.BOLD, 28));
             int popupX = showDamageOnEnemy ? enemyBaseX + 80 : playerBaseX + 80;
             int popupY = (showDamageOnEnemy ? enemyBaseY - 40 : playerBaseY - 40) - (20 - damagePopupY);
             
-            // Draw shadow
             g2.setColor(Color.BLACK);
             g2.drawString("-" + damagePopup, popupX + 2, popupY + 2);
             
-            // Draw damage number
             if (wasCritical) {
                 g2.setColor(Color.ORANGE);
             } else {
@@ -467,31 +436,24 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.drawString("-" + damagePopup, popupX, popupY);
         }
 
-        // Draw HP bars with type indicator
         drawHPBar(g2, enemyCock, 30, 30, true);
         drawHPBar(g2, playerCock, screenWidth - 270, 320, false);
 
-        // Draw battle UI box
         int boxX = 0, boxY = 420, boxW = screenWidth, boxH = 160;
         
-        // Gradient background for battle box
         GradientPaint boxGradient = new GradientPaint(0, boxY, new Color(20, 20, 40, 240), 0, boxY + boxH, new Color(10, 10, 30, 240));
         g2.setPaint(boxGradient);
         g2.fillRect(boxX, boxY, boxW, boxH);
-        
-        // Border
-        g2.setColor(new Color(255, 215, 0)); // Gold border
+        g2.setColor(new Color(255, 215, 0)); 
         g2.setStroke(new BasicStroke(3));
         g2.drawRect(boxX + 4, boxY + 4, boxW - 8, boxH - 8);
-        g2.setColor(new Color(139, 69, 19)); // Brown inner border
+        g2.setColor(new Color(139, 69, 19)); 
         g2.drawRect(boxX + 8, boxY + 8, boxW - 16, boxH - 16);
 
-        // Draw message
         g2.setFont(new Font("Monospaced", Font.BOLD, 20));
         g2.setColor(Color.WHITE);
         g2.drawString(battleMessage, boxX + 25, boxY + 38);
         
-        // Draw sub-message (effectiveness)
         if (!battleSubMessage.isEmpty()) {
             if (battleSubMessage.contains("super effective")) {
                 g2.setColor(new Color(0, 255, 100));
@@ -506,7 +468,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.drawString(battleSubMessage, boxX + 25, boxY + 58);
         }
 
-        // Draw skills with cursor selection
         if (isPlayerTurn && !isBattleAnimating) {
             List<Skill> skills = playerCock.getSkills();
             int skillStartY = boxY + 85;
@@ -516,7 +477,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                 int skillX = (i < 2) ? boxX + 25 : boxX + 400;
                 int skillY = skillStartY + (i % 2) * 35;
                 
-                // Highlight selected skill
                 if (i == skillCursor) {
                     g2.setColor(new Color(255, 255, 100, 80));
                     g2.fillRoundRect(skillX - 5, skillY - 20, 350, 30, 10, 10);
@@ -529,10 +489,8 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                     g2.setFont(new Font("Monospaced", Font.PLAIN, 16));
                 }
                 
-                // Draw skill name and type
                 g2.drawString("[" + (i + 1) + "] " + s.getName(), skillX, skillY);
-                
-                // Draw skill type badge
+
                 g2.setFont(new Font("Arial", Font.BOLD, 11));
                 Color typeColor = getTypeColor(s.getType());
                 g2.setColor(typeColor);
@@ -540,13 +498,11 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                 g2.setColor(Color.WHITE);
                 g2.drawString(s.getType().toUpperCase(), skillX + 188, skillY);
                 
-                // Draw damage
                 g2.setFont(new Font("Arial", Font.PLAIN, 12));
                 g2.setColor(Color.GRAY);
                 g2.drawString("PWR:" + s.getDamage(), skillX + 245, skillY);
             }
             
-            // Draw controls hint
             g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
             g2.setColor(Color.GRAY);
             g2.drawString("[W/S] Select   [ENTER/1-3] Attack   [M] Mute", boxX + 25, boxY + boxH - 15);
@@ -571,19 +527,16 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     }
 
     private void drawHPBar(Graphics2D g2, Rooster r, int x, int y, boolean isEnemy) {
-        // Background panel
         g2.setColor(new Color(40, 40, 60, 220));
         g2.fillRoundRect(x, y, 240, 80, 15, 15);
         g2.setColor(new Color(255, 215, 0, 150));
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x, y, 240, 80, 15, 15);
 
-        // Name and level
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 16));
         g2.drawString(r.getName(), x + 12, y + 22);
         
-        // Type badge
         Color typeColor = getTypeColor(r.getType());
         g2.setColor(typeColor);
         g2.fillRoundRect(x + 150, y + 8, 60, 18, 8, 8);
@@ -591,15 +544,12 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         g2.setFont(new Font("Arial", Font.BOLD, 11));
         g2.drawString(r.getType().toUpperCase(), x + 158, y + 21);
 
-        // HP bar background
         g2.setColor(new Color(60, 60, 60));
         g2.fillRoundRect(x + 12, y + 35, 216, 16, 8, 8);
         
-        // HP bar border
         g2.setColor(new Color(80, 80, 80));
         g2.drawRoundRect(x + 12, y + 35, 216, 16, 8, 8);
 
-        // HP bar fill
         double hpPercent = (double) r.getHp() / r.getMaxHp();
         hpPercent = Math.max(0, Math.min(1.0, hpPercent));
         
@@ -608,7 +558,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
         else if (hpPercent > 0.25) hpColor = new Color(255, 193, 7);
         else hpColor = new Color(220, 53, 69);
         
-        // Gradient HP bar
         int barWidth = (int) (212 * hpPercent);
         if (barWidth > 0) {
             GradientPaint hpGradient = new GradientPaint(x + 14, y + 37, hpColor.brighter(), x + 14, y + 49, hpColor.darker());
@@ -616,13 +565,11 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             g2.fillRoundRect(x + 14, y + 37, barWidth, 12, 6, 6);
         }
 
-        // HP text
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.BOLD, 13));
         String hpText = r.getHp() + " / " + r.getMaxHp();
         g2.drawString(hpText, x + 12, y + 68);
         
-        // HP label
         g2.setColor(Color.LIGHT_GRAY);
         g2.setFont(new Font("Arial", Font.PLAIN, 11));
         g2.drawString("HP", x + 200, y + 68);
@@ -697,26 +644,24 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
     private void executeTurn(int skillIndex) {
         if (playerCock == null || enemyCock == null) return;
         if (skillIndex >= playerCock.getSkills().size()) return;
-        if (isBattleAnimating) return; // Prevent spam
+        if (isBattleAnimating) return;
 
         isBattleAnimating = true;
         isPlayerTurn = false;
         
         Skill skill = playerCock.getSkills().get(skillIndex);
 
-        // Play skill-specific sound effect
         if (musicManager != null && skill.getSoundEffect() != null) {
             musicManager.playSound(skill.getSoundEffect());
         }
 
-        // Calculate damage with type effectiveness
+        
         double typeMultiplier = TypeEffectiveness.getMultiplier(skill.getType(), enemyCock.getType());
         boolean isCritical = Math.random() < GameConstants.CRIT_CHANCE;
         
         int dmg = playerCock.attack(enemyCock, skill);
         wasCritical = isCritical;
         
-        // Set effectiveness message
         if (typeMultiplier > 1.0) {
             battleSubMessage = "It's super effective!";
         } else if (typeMultiplier < 1.0) {
@@ -727,7 +672,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             battleSubMessage = "";
         }
         
-        // Trigger animation
         battleAnimTimer = 30;
         damagePopup = dmg;
         damagePopupY = 20;
@@ -753,19 +697,17 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
             List<Skill> eSkills = enemyCock.getSkills();
             Skill eSkill = eSkills.get(new Random().nextInt(eSkills.size()));
 
-            // Play enemy skill sound effect
+    
             if (musicManager != null && eSkill.getSoundEffect() != null) {
                 musicManager.playSound(eSkill.getSoundEffect());
             }
             
-            // Calculate enemy damage with type effectiveness
             double eTypeMultiplier = TypeEffectiveness.getMultiplier(eSkill.getType(), playerCock.getType());
             boolean eCrit = Math.random() < GameConstants.CRIT_CHANCE;
             
             int eDmg = enemyCock.attack(playerCock, eSkill);
             wasCritical = eCrit;
             
-            // Set effectiveness message
             if (eTypeMultiplier > 1.0) {
                 battleSubMessage = "It's super effective!";
             } else if (eTypeMultiplier < 1.0) {
@@ -776,7 +718,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                 battleSubMessage = "";
             }
             
-            // Trigger animation
             battleAnimTimer = 30;
             damagePopup = eDmg;
             damagePopupY = 20;
@@ -796,7 +737,6 @@ public class GameEngine extends JPanel implements Runnable, KeyListener {
                 loseTimer.setRepeats(false);
                 loseTimer.start();
             } else {
-                // Allow player to act again
                 Timer resetTimer = new Timer(800, evt2 -> {
                     isPlayerTurn = true;
                     isBattleAnimating = false;
