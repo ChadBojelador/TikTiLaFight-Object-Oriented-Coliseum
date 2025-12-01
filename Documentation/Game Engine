@@ -1,0 +1,179 @@
+📄 GameEngine Class Documentation
+
+Class Name: GameEngine
+
+Package: (if applicable, e.g., core)
+Language: Java
+
+Description:
+
+The GameEngine class is the central controller of the game, responsible for handling rendering, input, game state management, and battle logic. It provides a real-time game loop for smooth updates, manages player and enemy roosters, and orchestrates interactions between the game world, UI, and music/audio.
+
+This class integrates key gameplay systems: roaming, starter selection, battle transitions, animations, and skill execution.
+
+
+---
+
+Key Features:
+
+1. Game Loop and Rendering:
+
+Implements Runnable to run a continuous game loop at ~60 FPS.
+
+Uses paintComponent for custom rendering of world maps, UI, and battle scenes.
+
+Supports smooth animations for battle actions and player movement.
+
+
+
+2. Game States:
+
+STATE_TITLE – Displays title screen and start button.
+
+STATE_STARTER_SELECT – Allows the player to choose a starter rooster.
+
+STATE_ROAMING – Handles player movement, collision, and encounter generation.
+
+STATE_TRANSITION – Animates transitions between roaming and battle scenes.
+
+STATE_BATTLE – Handles turn-based battle system, including damage, effectiveness, and animations.
+
+
+
+3. Input Handling:
+
+Implements KeyListener to capture player input.
+
+Supports key navigation for movement, starter selection, battle actions, and toggling audio.
+
+Prevents input during animations to maintain consistent game flow.
+
+
+
+4. Battle System:
+
+Supports turn-based battles with player and enemy roosters.
+
+Integrates Skill objects and TypeEffectiveness for strategic damage calculation.
+
+Handles critical hits, effectiveness multipliers, and HP management.
+
+Displays damage popups, shaking animations, and HP bars for visual feedback.
+
+
+
+5. Camera and World Management:
+
+Computes camera offsets to center player on screen while respecting map boundaries.
+
+Uses tile-based collision to manage walkable and non-walkable areas.
+
+Generates random battle encounters in grassy tiles.
+
+
+
+6. Graphics and UI:
+
+Draws map tiles, roosters, battle backgrounds, and UI panels.
+
+Provides starter selection menu with cursor navigation.
+
+Implements dynamic gradients, type badges, and HP bars for immersive visuals.
+
+
+
+7. Music and Sound Integration:
+
+Uses MusicManager to play background music and sound effects.
+
+Handles battle, movement, and menu audio cues.
+
+Supports mute/unmute functionality.
+
+
+
+
+
+---
+
+Core Methods:
+
+setupGame() – Initializes player, music, and game state.
+
+startGameThread() – Starts the main game loop thread.
+
+update() – Updates game objects and state per frame.
+
+paintComponent(Graphics) – Renders the game world and UI.
+
+executeTurn(int skillIndex) – Handles player and enemy skill execution during battle.
+
+endBattle(boolean win) – Transitions back to roaming after battle completion.
+
+keyPressed(KeyEvent) / keyReleased(KeyEvent) – Captures player input.
+
+drawRoaming(Graphics2D) – Renders the map, player, and camera movement.
+
+drawBattle(Graphics2D) – Renders battle scene including roosters, HP bars, and skills.
+
+loadImages() / loadImageWithTransparency() – Loads visual assets with optional transparency handling.
+
+
+
+---
+
+Algorithm / Process Overview:
+
+1. Game Loop:
+
+Run at ~60 FPS using Runnable.
+
+Call update() → repaint() per frame.
+
+
+
+2. Player Movement & Encounters:
+
+Capture active keys.
+
+Move player while checking tile collisions.
+
+Randomly trigger battles in grass tiles.
+
+
+
+3. Battle Execution:
+
+Player selects skill → damage calculation using TypeEffectiveness.
+
+Animate damage popup and shake.
+
+Enemy executes turn with similar logic.
+
+Update HP bars and check for fainted roosters.
+
+
+
+4. Transition Effects:
+
+Flashing screen effect between roaming and battle.
+
+Gradual UI fade and message updates.
+
+
+
+
+
+---
+
+Benefits:
+
+Centralizes all core gameplay logic in one class for easier debugging and maintenance.
+
+Supports modular integration with Player, Rooster, Skill, MusicManager, and TypeEffectiveness.
+
+Provides rich visual and auditory feedback for a turn-based battle game.
+
+Ensures smooth animations and responsive controls for player engagement.
+
+
