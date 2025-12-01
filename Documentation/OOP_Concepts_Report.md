@@ -103,13 +103,11 @@
 
 ```java
 public final class Skill {
-    // PRIVATE FIELDS - Cannot be accessed directly from outside
     private final String name;
     private final int damage;
     private final String type;
     private final String soundEffect;
 
-    // CONSTRUCTOR - Only way to set values
     public Skill(String name, int damage, String type, String soundEffect){
         this.name = name;
         this.damage = damage;
