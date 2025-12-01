@@ -1,0 +1,260 @@
+
+📄 BattleGame Class Documentation
+
+Overview
+
+The BattleGame class serves as the central controller of the game's battle system in Cock Clashers: Object-Oriented Coliseum.
+It manages the game flow, including rooster selection, turn-based combat, skill execution, health updates, and recording battle statistics.
+
+This class coordinates interaction between the Model (Rooster, Skill, BattleStats) and the View (BattleDisplay), acting as the main driver for the entire battle simulation.
+
+
+---
+
+Purpose
+
+The primary purpose of BattleGame is to:
+
+Initialize and manage a complete battle session
+
+Control the turn-based battle loop
+
+Handle user input and decision-making during combat
+
+Invoke attack actions and apply resulting damage
+
+Display battle information through the console
+
+Record and present post-battle statistics
+
+
+It encapsulates all high-level operations required for executing a full battle between the player’s rooster and an AI-generated opponent.
+
+
+---
+
+System Role
+
+BattleGame functions as the Controller in the MVC-like structure of the project:
+
+Model: interacts with Rooster, Skill, BattleStats
+
+View: outputs via BattleDisplay
+
+Controller: interprets user input and drives game progression
+
+
+
+---
+
+Class Responsibilities
+
+✔ Initialize Game Components
+
+Sets up scanner for input
+
+Creates BattleStats objects for player and enemy
+
+Manages rooster selection via factory pattern
+
+
+✔ Manage Game Flow
+
+Handles rooster selection
+
+Executes battle loop
+
+Alternates between player and enemy turns
+
+Ends the game by displaying statistics
+
+
+✔ Execute Player and AI Turns
+
+During each round:
+
+Player selects a skill
+
+Enemy selects a random skill
+
+Both turns apply damage through the attack() method
+
+Health bars update through BattleDisplay
+
+
+✔ Record Battle Performance
+
+Tracks:
+
+Total damage dealt
+
+Damage received
+
+Turns taken
+
+Skills used
+
+
+
+---
+
+Method Documentation
+
+
+---
+
+start()
+
+Description:
+Initiates the entire battle sequence.
+Calls:
+
+1. displayBattleHeader()
+
+
+2. selectRoosters()
+
+
+3. battle()
+
+
+4. endGame()
+
+
+
+This method acts as the entry point of the battle system.
+
+
+---
+
+selectRoosters()
+
+Description:
+Handles rooster selection for both player and enemy.
+
+Process:
+
+Displays roster of available roosters through BattleDisplay
+
+Validates player selection using InputValidator
+
+Creates the corresponding rooster using RoosterFactory
+
+Generates an enemy rooster randomly
+
+
+Output:
+Displays matchup introduction.
+
+
+---
+
+battle()
+
+Description:
+Manages the main battle loop until either rooster faints.
+
+Key Functions:
+
+Alternates between playerTurn() and enemyTurn()
+
+Checks faint status after each turn
+
+Records turn count in both BattleStats objects
+
+
+The loop ends automatically when one rooster’s HP reaches zero.
+
+
+---
+
+playerTurn()
+
+Description:
+Executes the player's action during their turn.
+
+Steps:
+
+1. Displays turn header and health bars
+
+
+2. Lists available skills
+
+
+3. Validates player’s skill choice
+
+
+4. Executes attack via player.attack()
+
+
+5. Records:
+
+Damage dealt
+
+Skill use count
+
+Enemy damage taken
+
+
+
+
+This method ensures player interaction is clear and guided.
+
+
+---
+
+enemyTurn()
+
+Description:
+Automates the enemy’s action for its turn.
+
+Process:
+
+Selects a random skill
+
+Executes attack on the player
+
+Updates both BattleStats objects
+
+
+AI behavior can be improved in future versions with weighting or difficulty tiers.
+
+
+---
+
+endGame()
+
+Description:
+Finalizes the battle session.
+
+Displays:
+
+“BATTLE END” header
+
+Player performance statistics
+
+Enemy performance statistics
+
+
+Also closes the scanner to free resources.
+
+
+---
+
+Design Principles Applied
+
+Encapsulation: internal control of battle flow and private helper methods
+
+Abstraction: high-level orchestration of complex combat interactions
+
+Polymorphism: attack behaviors vary based on rooster type and skills
+
+Modularity: battle display, stats, and logic are separated into distinct classes
+
+Factory Pattern: used to generate roosters through RoosterFactory
+
+
+
+
+
+
