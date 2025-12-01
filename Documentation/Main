@@ -1,0 +1,86 @@
+📄 Main Class Documentation
+
+Class Name: Main
+
+Package: (if applicable, e.g., launcher)
+Language: Java
+
+Description:
+
+The Main class serves as the entry point for the Cock Clashers - GBA Edition game. It initializes the main window using Swing (JFrame), sets up the game panel (GameEngine), and starts the game loop. This class is essential for launching the game and providing the user interface container for gameplay.
+
+Key Features:
+
+Creates the main game window with a fixed size and title.
+
+Integrates the GameEngine panel, which handles all game logic and rendering.
+
+Centers the window on the screen.
+
+Starts the game setup and the main game loop thread.
+
+
+Methods:
+
+public static void main(String[] args)
+
+Description: Initializes the game window and starts the game.
+
+Parameters:
+
+String[] args – Command-line arguments (not used in this implementation).
+
+
+Process / Algorithm:
+
+1. Create a JFrame object to serve as the main window.
+
+
+2. Set default close operation to exit the program on window close.
+
+
+3. Disable window resizing and set the game title.
+
+
+4. Instantiate the GameEngine panel and add it to the window.
+
+
+5. Call window.pack() to size the window according to the game panel’s preferred size.
+
+
+6. Center the window on the screen using setLocationRelativeTo(null).
+
+
+7. Make the window visible.
+
+
+8. Call setupGame() on GameEngine to initialize game variables and assets.
+
+
+9. Start the game loop using startGameThread().
+
+
+
+Example Usage:
+
+public static void main(String[] args) {
+    JFrame window = new JFrame();
+    GameEngine gamePanel = new GameEngine();
+    window.add(gamePanel);
+    window.pack();
+    window.setVisible(true);
+    gamePanel.setupGame();
+    gamePanel.startGameThread();
+}
+
+Benefits:
+
+Centralized program entry point.
+
+Separates window creation and game logic for better modularity.
+
+Ensures smooth startup of the game with proper initialization of assets and threads.
+
+
+
+---
