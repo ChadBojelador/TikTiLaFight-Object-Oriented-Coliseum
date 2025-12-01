@@ -1,0 +1,182 @@
+
+
+📄 BattleStats Class Documentation
+
+Overview
+
+The BattleStats class is a performance-tracking component used to collect, store, and display important statistical data throughout a battle in Cock Clashers: Object-Oriented Coliseum.
+It records metrics such as damage dealt, damage taken, number of skills used, turns played, and critical hits.
+
+This class functions as an analytical tool, allowing both the game system and the player to review battle performance after each match.
+
+
+---
+
+Purpose
+
+The primary purpose of the BattleStats class is to:
+
+Track player and enemy performance in real time
+
+Provide quantitative feedback after the battle ends
+
+Support features like score systems, leveling, or achievements in future expansions
+
+
+It enhances post-game evaluation and supports further gameplay balancing.
+
+
+---
+
+System Role
+
+BattleStats is part of the Model Layer, storing numerical data related to combat performance.
+It is used by both:
+
+BattleGame → for recording actions each turn
+
+View Components (via displayStats()) → for presenting results
+
+
+
+---
+
+Attributes and Their Meaning
+
+Attribute	Description
+
+totalDamageDealt	Total amount of damage this rooster inflicted on the opponent
+totalDamageTaken	Total amount of damage received from the opponent
+skillsUsed	Number of skills executed during the battle
+turnsPlayed	Total number of turns taken in the combat
+criticalHits	Number of critical hits performed
+
+
+
+---
+
+Key Responsibilities
+
+✔ Track Damage Dealt
+
+✔ Track Damage Taken
+
+✔ Count Skill Usage
+
+✔ Count Turns Played
+
+✔ Track Critical Hits
+
+✔ Present All Statistics in a Formatted Summary
+
+These responsibilities help in both gameplay feedback and potential future enhancement like ranking systems or skill progression.
+
+
+---
+
+Method Documentation
+
+recordDamageDealt(int damage)
+
+Description:
+Adds the damage inflicted in the latest attack to the total damage dealt.
+
+Usage:
+Called immediately after a successful attack.
+
+
+---
+
+recordDamageTaken(int damage)
+
+Description:
+Adds the amount of damage received to the total damage taken.
+
+
+---
+
+recordSkillUsed()
+
+Description:
+Increments the counter of skills used by the rooster during combat.
+
+
+---
+
+recordTurn()
+
+Description:
+Increases the turn counter.
+Each battle round updates the turn count for both player and enemy.
+
+
+---
+
+recordCriticalHit()
+
+Description:
+Tracks how many times the rooster landed a critical hit.
+Useful for advanced combat mechanics such as luck, accuracy, or buffs.
+
+
+---
+
+displayStats()
+
+Description:
+Outputs a formatted ASCII-style statistics table showing:
+
+Turns Played
+
+Skills Used
+
+Damage Dealt
+
+Damage Taken
+
+Critical Hits
+
+
+Example format:
+
+╔══════════════════════════════════╗
+║     BATTLE STATISTICS            ║
+╠══════════════════════════════════╣
+║ Turns Played: 4                  ║
+║ Skills Used: 5                   ║
+║ Damage Dealt: 150                ║
+║ Damage Taken: 90                 ║
+║ Critical Hits: 1                 ║
+╚══════════════════════════════════╝
+
+This improves readability and provides a polished post-game summary.
+
+
+---
+
+Design Principles Applied
+
+Encapsulation: All statistics are private and modifiable only through dedicated methods.
+
+Single Responsibility Principle: The class focuses solely on statistics tracking and reporting.
+
+Modularity: Allows easy reuse for both player and enemy roosters.
+
+
+
+---
+
+Future Enhancements
+
+Percentage-based performance analysis
+
+Battle rating system (e.g., S/A/B/C)
+
+Graphical (GUI-based) statistics report
+
+Export stats to file for logging
+
+Support for multi-round tournaments
+
+
+
